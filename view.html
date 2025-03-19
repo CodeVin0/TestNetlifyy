@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Form Submissions</title>
+</head>
+<body>
+    <h2>Submitted Data</h2>
+    <ul id="submissionList"></ul>
+
+    <script>
+        async function fetchSubmissions() {
+            try {
+                let response = await fetch("https://getform.io/f/bllyezwb/submissions", { // Added /submissions
+                    method: "GET",
+                    headers: {
+                        "Accept": "application/json"
+                    }
+                });
+    
+                let data = await response.json();
+                console.log("API Response:", data); // Debugging - Check API response
+    
+                let list = document.getElementById("submissionList");
+    
+                data.forEach(entry => {
+                    console.log(entry); // Debugging - Check each submission
+                    let li = document.createElement("li");
+                    li.textContent = `Name: ${entry.Nama || entry.name}, Email: ${entry.Email || entry.email}, No. Hp: ${entry.No_Hp || entry.no_hp}, Bersedia Membayar: ${entry.bayar || entry.Bersedia_Membayar}`;
+                    list.appendChild(li);
+                });
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+    
+        fetchSubmissions();
+    </script>    
+</body>
+</html>
